@@ -7,13 +7,15 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "reactivity": "workspace:*"
+    "lodash-es": "^4.17.21",
+    "reactivity": "workspace:*",
+    "renderer": "workspace:*"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "vite": "^4.0.0",
-    "tsconfig": "workspace:*"
+    "tsconfig": "workspace:*",
+    "vite": "^4.0.0"
   }
 }

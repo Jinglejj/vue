@@ -1,5 +1,5 @@
 {
-  "name": "reactivity",
+  "name": "renderer",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.ts",
@@ -7,15 +7,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "lodash": "^4.17.21",
-    "lodash-es": "^4.17.21",
-    "typescript": "latest"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/lodash-es": "^4.17.6"
+  },
+  "dependencies": {
+    "lodash-es": "^4.17.21"
   }
 }
