@@ -1,4 +1,5 @@
 export * from "./effect";
+export * from './computed';
 
 export { default as flushQueue } from "./queue";
 
@@ -25,7 +26,7 @@ export const obj = new Proxy(data, {
   },
 });
 
-function track<T = {}>(target: T, key: Key) {
+export function track<T = {}>(target: T, key: Key) {
   if (!activeEffect) {
     return target[key];
   }
@@ -42,7 +43,7 @@ function track<T = {}>(target: T, key: Key) {
   activeEffect.deps.push(deps);
 }
 
-function trigger<T>(target: T, key: Key) {
+export function trigger<T>(target: T, key: Key) {
   const depsMap = bucket.get(target);
   if (!depsMap) return true;
   const effects = depsMap.get(key) || [];

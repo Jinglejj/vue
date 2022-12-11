@@ -1,5 +1,6 @@
 type EffectOption = {
-  scheduler: (fn: EffectFunction) => void;
+  scheduler?: (fn: EffectFunction) => void;
+  lazy?: boolean;
 };
 
 export type EffectFunction = Function & {
@@ -30,6 +31,8 @@ export function effect(fn: EffectFunction, options?: EffectOption) {
   };
   effectFn.deps = [];
   effectFn.options = options;
-  effectFn();
+  if(!options?.lazy){
+    effectFn();
+  }
   return effectFn;
 }
