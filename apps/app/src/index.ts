@@ -1,13 +1,10 @@
-import reactive, { effect } from "reactivity";
+import { effect, reactive, readonly, shallowReactive, shallowReadonly } from "reactivity";
 
-const obj = {};
-const proto = { bar: 1 };
-const child = reactive(obj);
-const parent = reactive(proto);
-Object.setPrototypeOf(child, parent);
+const obj = { a: { b: 1 } };
+const p = reactive(obj);
 
 effect(() => {
-  console.log(child.bar);
+  console.log(p.a.b);
 });
-
-child.bar = 2;
+p.a.b++;
+p.a.b++;
