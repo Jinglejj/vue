@@ -4,7 +4,7 @@ type EffectOption = {
 };
 
 export type EffectFunction = Function & {
-  deps: Set<Function>[];
+  deps?: Set<Function>[];
   options?: EffectOption;
 };
 
@@ -12,6 +12,9 @@ export let activeEffect: EffectFunction;
 export const effectStack: EffectFunction[] = [];
 
 function cleanup(effectFn: EffectFunction) {
+  if (!effectFn.deps?.length) {
+    return;
+  }
   for (let i = 0; i < effectFn.deps.length; i++) {
     const deps = effectFn.deps[i];
     deps.delete(effectFn);
@@ -31,7 +34,7 @@ export function effect(fn: EffectFunction, options?: EffectOption) {
   };
   effectFn.deps = [];
   effectFn.options = options;
-  if(!options?.lazy){
+  if (!options?.lazy) {
     effectFn();
   }
   return effectFn;

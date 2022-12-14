@@ -1,18 +1,17 @@
-import { isString } from "lodash-es";
+import { isArray, isString } from "lodash-es";
 import VNode from "./vnode";
-
-type ContainerEl = Element & { _vnode?: VNode };
 
 // 抽离创建元素的API，设计通用的渲染器，适用不同平台
 type CreateRendererOptions<E> = {
   createElement: (tag: string) => E;
   setElementText: (el: E, text: string) => void;
   insert: (el: E, parent: E, anchor?: E | null) => void;
+  setAttribute: (el: E, key:string, value: string | number | boolean) => void;
 };
 
 export default function createRenderer<E>(options: CreateRendererOptions<E>) {
-  const { createElement, setElementText, insert } = options;
-  function patch(n1: VNode | undefined, n2: VNode, container: E) {
+  const { createElement, setElementText, insert, setAttribute } = options;
+  function patch(n1: VNode | null | undefined, n2: VNode, container: E) {
     if (!n1) {
       mountElement(n2, container);
     } else {
@@ -36,9 +35,21 @@ export default function createRenderer<E>(options: CreateRendererOptions<E>) {
 
   function mountElement(vnode: VNode, container: E) {
     const el = createElement(vnode.type);
-    if (isString(vnode.children)) {
-      setElementText(el, vnode.children);
+    const { children, props } = vnode;
+    if (isString(children)) {
+      setElementText(el, children);
+    } else if (isArray(children)) {
+      children.forEach((child) => {
+        patch(null, child, el);
+      });
     }
+
+    if (props) {
+      for (const key in props) {
+        setAttribute(el, key, props[key]);
+      }
+    }
+
     insert(el, container);
   }
 
