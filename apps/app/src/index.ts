@@ -1,10 +1,22 @@
-import { effect, reactive, readonly, shallowReactive, shallowReadonly } from "reactivity";
+import {
+  effect,
+  reactive,
+  readonly,
+  shallowReactive,
+  shallowReadonly,
+} from "reactivity";
 
-const obj = { a: { b: 1 } };
-const p = reactive(obj);
+const obj = {};
+const p = reactive<number[]>([]);
 
 effect(() => {
-  console.log(p.a.b);
+  p.push(1);
 });
-p.a.b++;
-p.a.b++;
+
+effect(() => {
+  p.push(1);
+});
+
+effect(() => {
+  console.log(p);
+});
