@@ -79,6 +79,11 @@ function createReactive<T extends Object>(
         return target;
       }
 
+      if (key === "size") {
+        track(target, ITERATE_KEY);
+        return Reflect.get(target, key, target);
+      }
+
       if (isArray(obj) && arrayInstrumentations.hasOwnProperty(key)) {
         return Reflect.get(arrayInstrumentations, key, receiver);
       }
@@ -86,7 +91,8 @@ function createReactive<T extends Object>(
       if (!isReadonly && !isSymbol(key)) {
         track(target, key);
       }
-      const res = Reflect.get(target, key, receiver);
+        const res = Reflect.get(target, key, receiver);
+    //   const res = target[key].bind(target);
       if (isShallow) {
         return res;
       }

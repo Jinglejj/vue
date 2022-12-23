@@ -6,17 +6,10 @@ import {
   shallowReadonly,
 } from "reactivity";
 
-const obj = {};
-const p = reactive<number[]>([]);
+const s = new Set([1, 2, 3]);
+const p = reactive(s);
 
 effect(() => {
-  p.push(1);
+  console.log(p.size);
 });
-
-effect(() => {
-  p.push(1);
-});
-
-effect(() => {
-  console.log(p);
-});
+p.add(5);
