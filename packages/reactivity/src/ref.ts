@@ -10,7 +10,7 @@ function ref<T>(val: T) {
   return reactive(wrapper);
 }
 
-function toRef(obj: any, key: any) {
+export function toRef(obj: any, key: any) {
   const wrapper = {
     get value() {
       return obj[key];
@@ -25,7 +25,7 @@ function toRef(obj: any, key: any) {
   return wrapper;
 }
 
-function proxyRefs<T extends Object>(target: T): T {
+export function proxyRefs<T extends Object>(target: T): T {
   return new Proxy(target, {
     get(target, key, receiver) {
       const value = Reflect.get(target, key, receiver);

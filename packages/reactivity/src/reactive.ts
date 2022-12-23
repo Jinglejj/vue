@@ -92,7 +92,6 @@ function createReactive<T extends Object>(
         track(target, key);
       }
         const res = Reflect.get(target, key, receiver);
-    //   const res = target[key].bind(target);
       if (isShallow) {
         return res;
       }
