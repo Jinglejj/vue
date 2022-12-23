@@ -4,12 +4,20 @@ import {
   readonly,
   shallowReactive,
   shallowReadonly,
+  ref,
 } from "reactivity";
 
-const s = new Set([1, 2, 3]);
-const p = reactive(s);
+// const s = new Set([1, 2, 3]);
+// const p = reactive(s);
+
+// effect(() => {
+//   console.log(p.size);
+// });
+// p.add(5);
+
+const refVal = ref(1);
 
 effect(() => {
-  console.log(p.size);
+  console.log(refVal.value);
 });
-p.add(5);
+refVal.value = 2;
