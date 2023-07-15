@@ -3,7 +3,7 @@ export * from './computed';
 
 export { default as flushQueue } from './queue';
 
-import { eq, has, isArray, isNull, isObject, isSymbol } from 'lodash-es';
+import { eq, has, hasIn, isArray, isNull, isObject, isSymbol } from 'lodash-es';
 import { activeEffect, EffectFunction } from './effect';
 
 const bucket = new WeakMap<any, Map<any, Set<EffectFunction>>>();
@@ -18,7 +18,7 @@ type CreateReactiveOptions = {
   isReadonly?: boolean;
 };
 
-export function reactive<T extends Object>(obj: T): T {
+export function reactive<T extends object>(obj: T): T {
   const existionProxy = reactiveMap.get(obj);
   if (existionProxy) {
     return existionProxy;
@@ -29,14 +29,14 @@ export function reactive<T extends Object>(obj: T): T {
   return proxy;
 }
 
-export function shallowReactive<T extends Object>(obj: T): T {
+export function shallowReactive<T extends object>(obj: T): T {
   return createReactive(obj, { isShallow: true });
 }
 
-export function readonly<T extends Object>(obj: T): T {
+export function readonly<T extends object>(obj: T): T {
   return createReactive(obj, { isReadonly: true });
 }
-export function shallowReadonly<T extends Object>(obj: T): T {
+export function shallowReadonly<T extends object>(obj: T): T {
   return createReactive(obj, { isShallow: true, isReadonly: true });
 }
 
@@ -63,13 +63,13 @@ let shouldTrack = true;
   const originMethod = Array.prototype[method as any];
   arrayInstrumentations[method] = function (...args: any) {
     shouldTrack = false;
-    let res = originMethod.apply(this, args);
+    const res = originMethod.apply(this, args);
     shouldTrack = true;
     return res;
   };
 });
 
-function createReactive<T extends Object>(
+function createReactive<T extends object>(
   obj: T,
   { isShallow, isReadonly }: CreateReactiveOptions = {},
 ): T {
@@ -84,7 +84,7 @@ function createReactive<T extends Object>(
         return Reflect.get(target, key, target);
       }
 
-      if (isArray(obj) && arrayInstrumentations.hasOwnProperty(key)) {
+      if (isArray(obj) && hasIn(arrayInstrumentations, key)) {
         return Reflect.get(arrayInstrumentations, key, receiver);
       }
 
@@ -142,7 +142,7 @@ function createReactive<T extends Object>(
   });
 }
 
-export function track<T = {}>(target: T, key: Key) {
+export function track<T = object>(target: T, key: Key) {
   if (!activeEffect || !shouldTrack) {
     return;
   }

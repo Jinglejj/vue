@@ -1,4 +1,4 @@
-import { track, trigger } from '.';
+import { track, trigger } from './index';
 import { effect, EffectFunction } from './effect';
 function computed(fn: EffectFunction) {
   let value;

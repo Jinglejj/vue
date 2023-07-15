@@ -25,7 +25,7 @@ export function toRef(obj: any, key: any) {
   return wrapper;
 }
 
-export function proxyRefs<T extends Object>(target: T): T {
+export function proxyRefs<T extends object>(target: T): T {
   return new Proxy(target, {
     get(target, key, receiver) {
       const value = Reflect.get(target, key, receiver);

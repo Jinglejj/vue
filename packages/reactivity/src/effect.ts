@@ -3,8 +3,8 @@ type EffectOption = {
   lazy?: boolean;
 };
 
-export type EffectFunction = Function & {
-  deps?: Set<Function>[];
+export type EffectFunction = Fn & {
+  deps?: Set<Fn>[];
   options?: EffectOption;
 };
 

@@ -1,4 +1,4 @@
-export const jobQueue = new Set<Function>();
+export const jobQueue = new Set<Fn>();
 
 const p = Promise.resolve();
 

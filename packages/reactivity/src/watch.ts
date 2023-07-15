@@ -8,14 +8,10 @@ type WatchOption = {
 
 function watch(
   source: any,
-  cb: (
-    newValue: any,
-    oldValue: any,
-    onInvalidate?: (fn: Function) => void,
-  ) => void,
+  cb: (newValue: any, oldValue: any, onInvalidate?: (fn: Fn) => void) => void,
   options?: WatchOption,
 ) {
-  let getter: Function;
+  let getter: Fn;
   if (isFunction(source)) {
     getter = source;
   } else {
@@ -23,10 +19,10 @@ function watch(
   }
 
   let oldValue: any, newValue: any;
-  let cleanup: Function;
+  let cleanup: Fn;
 
-  function onInvalidate(fn: Function) {
-    cleanup = fn();
+  function onInvalidate(fn: Fn) {
+    cleanup = fn;
   }
 
   const job = () => {
