@@ -1,10 +1,10 @@
-import { get } from "lodash-es";
-import { reactive } from "./reactive";
+import { get } from 'lodash-es';
+import { reactive } from './reactive';
 function ref<T>(val: T) {
   const wrapper = {
     value: val,
   };
-  Object.defineProperty(wrapper, "__v_isRef", {
+  Object.defineProperty(wrapper, '__v_isRef', {
     value: true,
   });
   return reactive(wrapper);
@@ -19,7 +19,7 @@ export function toRef(obj: any, key: any) {
       obj[key] = val;
     },
   };
-  Object.defineProperty(wrapper, "__v_isRef", {
+  Object.defineProperty(wrapper, '__v_isRef', {
     value: true,
   });
   return wrapper;

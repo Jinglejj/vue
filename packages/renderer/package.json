@@ -14,6 +14,7 @@
     "@types/lodash-es": "^4.17.6"
   },
   "dependencies": {
-    "lodash-es": "^4.17.21"
+    "lodash-es": "^4.17.21",
+    "tsconfig": "workspace:*"
   }
 }

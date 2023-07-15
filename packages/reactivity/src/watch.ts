@@ -1,9 +1,9 @@
-import { forOwn, isFunction, isNull, isObject } from "lodash-es";
-import { effect } from "./effect";
+import { forOwn, isFunction, isNull, isObject } from 'lodash-es';
+import { effect } from './effect';
 
 type WatchOption = {
   immediate?: boolean;
-  flush?: "pre" | "post" | "sync";
+  flush?: 'pre' | 'post' | 'sync';
 };
 
 function watch(
@@ -11,9 +11,9 @@ function watch(
   cb: (
     newValue: any,
     oldValue: any,
-    onInvalidate?: (fn: Function) => void
+    onInvalidate?: (fn: Function) => void,
   ) => void,
-  options?: WatchOption
+  options?: WatchOption,
 ) {
   let getter: Function;
   if (isFunction(source)) {
@@ -41,7 +41,7 @@ function watch(
   const effectFn = effect(() => getter?.(), {
     lazy: true,
     scheduler() {
-      if (options?.flush === "post") {
+      if (options?.flush === 'post') {
         const p = Promise.resolve();
         p.then(job);
       } else {

@@ -1,10 +1,10 @@
-export * from "./effect";
-export * from "./computed";
+export * from './effect';
+export * from './computed';
 
-export { default as flushQueue } from "./queue";
+export { default as flushQueue } from './queue';
 
-import { eq, has, isArray, isNull, isObject, isSymbol } from "lodash-es";
-import { activeEffect, EffectFunction } from "./effect";
+import { eq, has, isArray, isNull, isObject, isSymbol } from 'lodash-es';
+import { activeEffect, EffectFunction } from './effect';
 
 const bucket = new WeakMap<any, Map<any, Set<EffectFunction>>>();
 
@@ -12,7 +12,7 @@ const reactiveMap = new WeakMap<any, any>();
 
 type Key = string | symbol;
 
-const ITERATE_KEY = "interate_key";
+const ITERATE_KEY = 'interate_key';
 type CreateReactiveOptions = {
   isShallow?: boolean;
   isReadonly?: boolean;
@@ -47,7 +47,7 @@ type ArrayInstrumentation = {
 
 const arrayInstrumentations: ArrayInstrumentation = {};
 
-["includes", "indexOf", "lastIndexOf"].forEach((method) => {
+['includes', 'indexOf', 'lastIndexOf'].forEach((method) => {
   const originMethod = Array.prototype[method as any];
   arrayInstrumentations[method] = function (...args: any) {
     let res = originMethod.apply(this, args);
@@ -59,7 +59,7 @@ const arrayInstrumentations: ArrayInstrumentation = {};
 });
 
 let shouldTrack = true;
-["pop", "push", "shift", "unshift", "splice"].forEach((method) => {
+['pop', 'push', 'shift', 'unshift', 'splice'].forEach((method) => {
   const originMethod = Array.prototype[method as any];
   arrayInstrumentations[method] = function (...args: any) {
     shouldTrack = false;
@@ -71,15 +71,15 @@ let shouldTrack = true;
 
 function createReactive<T extends Object>(
   obj: T,
-  { isShallow, isReadonly }: CreateReactiveOptions = {}
+  { isShallow, isReadonly }: CreateReactiveOptions = {},
 ): T {
   return new Proxy<T>(obj, {
     get(target, key, receiver) {
-      if (key === "raw") {
+      if (key === 'raw') {
         return target;
       }
 
-      if (key === "size") {
+      if (key === 'size') {
         track(target, ITERATE_KEY);
         return Reflect.get(target, key, target);
       }
@@ -91,7 +91,7 @@ function createReactive<T extends Object>(
       if (!isReadonly && !isSymbol(key)) {
         track(target, key);
       }
-        const res = Reflect.get(target, key, receiver);
+      const res = Reflect.get(target, key, receiver);
       if (isShallow) {
         return res;
       }
@@ -136,7 +136,7 @@ function createReactive<T extends Object>(
       return Reflect.has(target, key);
     },
     ownKeys(target) {
-      track(target, isArray(target) ? "length" : ITERATE_KEY);
+      track(target, isArray(target) ? 'length' : ITERATE_KEY);
       return Reflect.ownKeys(target);
     },
   });
@@ -159,15 +159,15 @@ export function track<T = {}>(target: T, key: Key) {
   activeEffect?.deps?.push(deps);
 }
 enum TriggerType {
-  ADD = "ADD",
-  SET = "SET",
-  DELETE = "DELETE",
+  ADD = 'ADD',
+  SET = 'SET',
+  DELETE = 'DELETE',
 }
 export function trigger<T>(
   target: T,
   key: Key,
   type: TriggerType,
-  newValue?: any
+  newValue?: any,
 ) {
   const depsMap = bucket.get(target);
   if (!depsMap) return true;
@@ -181,14 +181,14 @@ export function trigger<T>(
   });
 
   if (type === TriggerType.ADD && isArray(target)) {
-    const lengthEffects = depsMap.get("length");
+    const lengthEffects = depsMap.get('length');
     lengthEffects?.forEach((effectFn) => {
       if (effectFn !== activeEffect) {
         effectToRun.add(effectFn);
       }
     });
   }
-  if (isArray(target) && key === "length") {
+  if (isArray(target) && key === 'length') {
     depsMap.forEach((effects, key) => {
       if (key >= newValue) {
         effects?.forEach((effectFn) => {

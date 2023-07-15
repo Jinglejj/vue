@@ -1,5 +1,5 @@
-import { track, trigger } from ".";
-import { effect, EffectFunction } from "./effect";
+import { track, trigger } from '.';
+import { effect, EffectFunction } from './effect';
 function computed(fn: EffectFunction) {
   let value;
   let dirty = true;
@@ -8,7 +8,7 @@ function computed(fn: EffectFunction) {
     scheduler() {
       if (!dirty) {
         dirty = true;
-        trigger(obj, "value");
+        trigger(obj, 'value');
       }
     },
   });
@@ -19,7 +19,7 @@ function computed(fn: EffectFunction) {
         value = effectFn();
         dirty = false;
       }
-      track(obj, "value");
+      track(obj, 'value');
       return value;
     },
   };
